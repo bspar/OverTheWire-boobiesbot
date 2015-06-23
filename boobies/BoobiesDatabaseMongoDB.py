@@ -6,7 +6,7 @@ from BoobiesDatabase import BoobiesDatabase
 import urllib2, base64, time
 
 class BoobiesDatabaseMongoDB(BoobiesDatabase):
-    def __init__(self, dbname = "ass", host="localhost"): #{{{
+    def __init__(self, dbname = "booty", host="localhost"): #{{{
 	client = MongoClient("mongodb://%s" % host)
 	db = client[dbname]
 	self.collection = db[dbname]
