@@ -36,21 +36,21 @@ class BoobiesBot(GenericIRCBot):
 		"help": "this help text",
 		"msgtypes": ["private"],
 	    },
-	    "!booty": { 
+	    "!booties": { 
 	    	"fn": self.handle_BOOBIES, 
 		"argc": self.DontCheckARGC, 
 		"tillEnd": True,
-		"help": "get a random booty link, or add one if argument is given. Hash-tags can be added behind the URL",
+		"help": "get a random booties link, or add one if argument is given. Hash-tags can be added behind the URL",
 		"msgtypes": ["private", "public", "directed"],
 	    },
-            "!delbooty": {
+            "!delbooties": {
                 "fn": self.handle_DELBOOBIES,
                 "argc": 1,
                 "tillEnd": True,
                 "help": "delete an boody URL by ID",
 		"msgtypes": ["public", "directed"],
             },
-            "!aabooty": {
+            "!aabooties": {
                 "fn": self.handle_AABOOBIES,
                 "argc": 0,
                 "tillEnd": False,
@@ -93,7 +93,7 @@ class BoobiesBot(GenericIRCBot):
 	taglist = req["words"][1:]
 
 	if any(not self.factory.db.isValidTag(x) for x in taglist):
-	    self.sendReply(req, "Found no such booty :(")
+	    self.sendReply(req, "Found no such booties :(")
 	    return
 
 	# if we get here, then we have no idea what the user means... return a random URL
@@ -106,7 +106,7 @@ class BoobiesBot(GenericIRCBot):
 	        tagmsg = "No tags"
 	    self.sendReply(req, msgfmt % (bid, url, tagmsg))
 	else:
-	    self.sendReply(req, "Found no such booty :(")
+	    self.sendReply(req, "Found no such booties :(")
     #}}}
     def subhandle_SPECIFIC_BOOBIES(self, req, url, bid, tags): #{{{
 	# we found a URL that matches an ID specified by the user, return it
@@ -125,11 +125,11 @@ class BoobiesBot(GenericIRCBot):
 	    return
 
 	if self.factory.db.alreadyStored(url):
-	    self.sendReply(req, "Thanks, but I already had dat booty <3")
+	    self.sendReply(req, "Thanks, but I already had dat booties <3")
 	    return
 	else:
 	    bid = self.factory.db.addBoobies(url, addedby=req["fromuser"])
-	    msg = "Thanks for dat booty (id=%s)! <3" % bid
+	    msg = "Thanks for dat booties (id=%s)! <3" % bid
 	    if len(req["words"][1:]) > 1:
 		(suc, errmsg) = self.factory.db.addTags(bid, req["words"][2:], addedby=req["fromuser"])
 		if not suc:
@@ -157,9 +157,9 @@ class BoobiesBot(GenericIRCBot):
     def handle_DELBOOBIES(self, req): #{{{
         boobieid = req["words"][1]
 	if self.factory.db.delBoobies(boobieid):
-	    self.sendReply(req, "removed booty url %s" % boobieid)
+	    self.sendReply(req, "removed booties url %s" % boobieid)
 	else:
-	    self.sendReply(req, "Could not remove dat booty")
+	    self.sendReply(req, "Could not remove dat booties")
 
 #}}}
     def handle_AABOOBIES(self, req): #{{{
@@ -227,9 +227,9 @@ class BoobiesBot(GenericIRCBot):
     	for url in req["words"]:
 	    if self.looksLikeValidBoobiesURL(url) and not self.factory.db.alreadyStored(url):
 		if isBoobiesPicture(url):
-		    req["msg"] = "!booty %s" % url
-		    req["origmsg"] = "!booty %s" % url
-		    req["words"] = ["!booty", url]
+		    req["msg"] = "!booties %s" % url
+		    req["origmsg"] = "!booties %s" % url
+		    req["words"] = ["!booties", url]
 		    self.subhandle_ADD_BOOBIES(req, url)
     #}}}
     def joined(self, channel): #{{{
@@ -246,7 +246,7 @@ class BoobiesBotFactory(GenericIRCBotFactory):
 if __name__ == '__main__':
     # create factory protocol and application
     db = BoobiesDatabaseMongoDB(host=sys.argv[2] if len(sys.argv) > 2 else "localhost")
-    f = BoobiesBotFactory(BoobiesBot, db, ["#thevoid"], "booty")
+    f = BoobiesBotFactory(BoobiesBot, db, ["#thevoid"], "booties")
 
     # connect factory to this host and port
     reactor.connectTCP(sys.argv[1] if len(sys.argv) > 1 else "morgan.hackint.org", 6667, f)
